@@ -1,0 +1,185 @@
+@startuml
+
+title Class Diagram GroundWater\n
+skinparam class {
+    BorderColor CCC
+    BackgroundColor white
+}
+
+skinparam roundCorner 15
+skinparam ClassBorderThickness 1
+skinparam ClassFontSize 13
+skinparam ClassAttributeFontColor #3c3f41
+skinparam CircledCharacterRadius 10
+skinparam CircledCharacterFontSize 14
+skinparam Shadowing false
+skinparam NoteBackgroundColor white
+skinparam NoteBorderColor #ccc
+
+Package Info #fafafa/fafafa {
+}
+Package GroundWater #fafafa/fafafa {
+}
+Package Lectorate #fafafa/fafafa {
+}
+
+namespace Info {
+	note as testt
+		For the sensors, we map all the data from the sensor, the placement's peilbuis, latitude and longitude from
+		the Lectorate to the sensor of GroundWater. The fields of the lectorate are in Dutch, but we decided
+		to translate it to English because it's better maintainable and looks better. For example, the peilbuis
+		from the Lectorate is called a monitoringWell in GroundWater.
+	end note
+}
+
+namespace GroundWater {
+  class GroundWater.Sensor {
+	  + internalId : Long
+	  + uuid : String
+	  + externalSensorId : Long
+	  + externalMonitoringWellId : Long
+	  + status : String
+	  + createdBy : Long
+	  + createdOn : String
+	  + modifiedBy : Long
+	  + modifiedOn : String
+	  + brand : String
+	  + type : String
+	  + name : String
+	  + latitude  : Double
+	  + longitude  : Double
+	  + address  : String
+	  + users : List<User>
+	  + cellarHeight : Int
+  }
+
+  class GroundWater.User {
+  	  + id : Long
+  	  + oauthProvider
+  	  + oauthId : String
+  	  + username : String
+  	  + name : String
+  	  + firebaseToken : String
+  	  + sensors : List<Sensor>
+  	  + notes : List<Note>
+  	  + setting : Setting
+  }
+
+  class GroundWater.Note {
+	  + id : Long
+	  + dataPointId : Long
+	  + creationDate : Long
+	  + externalMonitoringWellId  : Long
+	  + description : String
+	  + user : User
+  }
+
+  class GroundWater.Setting {
+      + id : Long
+      + precipitationAmount : Double
+      + precipitationDuration : Double
+      + precipitationAmountChance : Int
+      + groundWaterLevel : Int
+      + showPrecipitationAmountAndDuration : Boolean
+      + showPrecipitationChance : Boolean
+      + showGroundWaterLevel : Boolean
+  }
+
+  class GroundWater.Notification {
+      + id : Long
+      + user : User
+      + date : Long
+      + type : Type
+   }
+
+  enum GroundWater.Type {
+    WEATHER,
+    GROUNDWATER
+  }
+}
+
+Info -[hidden]- GroundWater
+GroundWater -[hidden]- Lectorate
+
+namespace Lectorate {
+	class Lectorate.SensorPlacement {
+	  + id : Long
+	  + status : String
+	  + created_by : Long
+	  + created_on : String
+	  + modified_by : Long
+	  + modified_on : String
+	  + start : String
+	  + einde : String
+	  + opmerking : String
+	  + peilbuis : Long
+	  + sensor: Long
+	}
+
+	class Lectorate.Sensor {
+	  + id : Long
+      + status : String
+      + created_by : Long
+      + created_on : String
+      + modified_by : Long
+      + modified_on : String
+      + label : String
+      + merk : String
+      + type : String
+      + name : String
+	}
+
+	class Lectorate.MonitoringWell {
+	  + id : Long
+      + status : String
+      + created_by : Long
+      + created_on : String
+      + modified_by : Long
+      + modified_on : String
+      + locatie : String
+      + rdx : Double
+      + rdy : Double
+      + latitude : Double
+      + longitude : Double
+      + plaatsingsdatum : String
+      + maaiveld : Double
+      + bovenkant_peilbuis : Double
+      + lengte_stijgbuis : Double
+      + lengte_filter : Double
+      + totale_lengte : Double
+	}
+
+	class Lectorate.MonitoringWellMeasurement {
+	  + id: Long
+      + sensor_timestamp : String
+      + server_timestamp : String
+      + groundwater_level : Double
+      + peilbuis: Long
+      + sensormeting: Long
+    }
+
+    class Lectorate.SensorMeasurement {
+    	 id : Long
+         level : Long
+         level_from_ground : Long
+         sensor_timestamp : String
+         server_timestamp : String
+         temperature : Double
+         reflection_time : Long
+         retries : Long
+         battery_level : Long
+         sensor : Long
+    }
+}
+
+
+GroundWater.User "*" 	*-r- 	"*" GroundWater.Sensor
+Lectorate.SensorPlacement "*" *-l- "1" Lectorate.Sensor
+Lectorate.SensorPlacement "*" *-r- "1" Lectorate.MonitoringWell
+Lectorate.MonitoringWellMeasurement "1" -r-* "*" GroundWater.Note
+Lectorate.MonitoringWell "1" -r-* "*" GroundWater.Note
+GroundWater.User "1" *-r-* "1" GroundWater.Setting
+GroundWater.Notification "*" -r- "1" GroundWater.Type
+GroundWater.User "1" -r- "*" GroundWater.Note
+
+@enduml

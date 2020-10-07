@@ -1,0 +1,22 @@
+include: package:pedantic/analysis_options.yaml
+
+analyzer:
+  exclude: [build/**]
+  strong-mode:
+    implicit-casts: false
+
+linter:
+  rules:
+    - avoid_empty_else
+    - avoid_print
+    - empty_statements
+    - always_declare_return_types
+    - avoid_return_types_on_setters
+    - avoid_setters_without_getters
+    - constant_identifier_names
+    - empty_catches
+    - empty_constructor_bodies
+    - non_constant_identifier_names
+    - package_api_docs
+    - prefer_double_quotes
+    - prefer_is_empty

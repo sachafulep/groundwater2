@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "844907973827",
+    "firebase_url": "https://groundwater-260114.firebaseio.com",
+    "project_id": "groundwater-260114",
+    "storage_bucket": "groundwater-260114.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844907973827:android:7fbaf9805558a1ad696676",
+        "android_client_info": {
+          "package_name": "com.ground.water"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844907973827-c8lm8m4all3e8do9i5ut4bsutv8aqbbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU3NyJgWcNXn6kj9Un-nPPJmhQSUI9dvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844907973827-c8lm8m4all3e8do9i5ut4bsutv8aqbbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

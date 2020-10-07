@@ -1,0 +1,126 @@
+@startuml
+
+title Class Diagram GroundWater\n
+skinparam class {
+    BorderColor CCC
+    BackgroundColor white
+}
+
+skinparam roundCorner 15
+skinparam ClassBorderThickness 1
+skinparam ClassFontSize 13
+skinparam ClassAttributeFontColor #3c3f41
+skinparam CircledCharacterRadius 10
+skinparam CircledCharacterFontSize 14
+skinparam Shadowing false
+skinparam NoteBackgroundColor white
+skinparam NoteBorderColor #ccc
+
+Package GroundWater #fafafa/fafafa {
+}
+namespace GroundWater {
+  class GroundWater.Sensor {
+	  + internalId : int
+	  + uuid : String
+	  + externalSensorId : int
+	  + externalMonitoringWellId : int
+	  + name : String
+	  + latitude  : Double
+	  + longitude  : Double
+	  + address  : String
+	  + cellarHeight : int
+  }
+
+  class GroundWater.User {
+  	  + id : int
+  	  + oauthProvider
+  	  + oauthId : String
+  	  + username : String
+  	  + name : String
+  	  + sensors : List<Sensor>
+  	  + firebaseToken : String
+  	  + setting : Setting
+  }
+
+  class GroundWater.Note {
+	  + id : int
+	  + dataPointId : int
+	  + creationDate : int
+	  + externalMonitoringWellId  : int
+	  + description : String
+	  + user : User
+  }
+
+  class GroundWater.MonitoringWellMeasurement {
+      + id : int
+      + sensorTimestamp : DateTime
+      + serverTimestamp : DateTime
+      + groundwaterLevel : Double
+      + monitoringWell : int
+      + sensorMeting : int
+   }
+
+   class GroundWater.MonitoringWell {
+      + id : Int
+      + totalLength : Double
+      + topMonitoringWell : Double
+      + groundLevel : Double
+   }
+
+   class GroundWater.SensorMeasurement {
+      + id : int
+      + level : int
+      + levelFromGround : int
+      + sensorTimestamp : DateTime
+      + serverTimestamp : DateTime
+      + temperature : Double
+   }
+
+   class GroundWater.WeatherMeasurement {
+   	 + time : DateTime
+     + precipIntensity : Double
+     + icon : String
+   }
+
+   class GroundWater.Setting {
+      + precipitationAmount : Double
+      + precipitationDuration : Double
+      + precipitationAmountChance : int
+      + groundWaterLevel : int
+      + basementDepth : int
+      + showPrecipitationAmountAndDuration : Bool
+      + showPrecipitationChance : Bool
+      + showGroundWaterLevel : Bool
+   }
+
+   class GroundWater.Solution {
+      + title : String
+      + description : String
+   }
+
+   class GroundWater.Question {
+      + question : String
+      + answers : List<Answer>
+   }
+
+   class GroundWater.Answer {
+      + answer : String
+      + nextQuestion : Question
+      + solutions : List<Solution>
+    }
+}
+
+
+
+GroundWater.User "*" 	*-r-* 	"*" GroundWater.Sensor
+GroundWater.Answer "1" -r-* "*" GroundWater.Solution
+GroundWater.Answer "*" *-r- "1" GroundWater.Question
+GroundWater.Note "*" *-l-* "*" GroundWater.MonitoringWellMeasurement
+GroundWater.User "1" *-l-* "1" GroundWater.Setting
+
+' This is purely so the classes won't remain as one big horizontal image but rather a grid
+GroundWater.Answer -[hidden]- GroundWater.Note
+GroundWater.Sensor -[hidden]- GroundWater.MonitoringWellMeasurement
+GroundWater.Sensor -[hidden]- GroundWater.Answer
+
+@enduml
